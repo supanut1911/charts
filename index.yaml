@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  astronut:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-09-22T00:34:46.357064+07:00"
+    description: A Helm chart for Kubernetes
+    digest: 2eccddacf7aa3e4494503b62f1ab27fd81b923e1c1c80661d3861b344cb31c64
+    name: astronut
+    type: application
+    urls:
+    - https://supanut1911.github.io/charts/astronut-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-09-22T00:34:46.356167+07:00"
