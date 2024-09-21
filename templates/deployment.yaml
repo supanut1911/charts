@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: {{ .Release.Name }}
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.astronut.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - image: {{ .Values.astronut.image.repository }}:{{ .Values.astronut.image.tag }}
+        name: {{ .Values.astronut.app.name }}
+        resources: {}
+status: {}
