@@ -21,4 +21,16 @@ spec:
       - image: {{ .Values.astronut.image.repository }}:{{ .Values.astronut.image.tag }}
         name: {{ .Values.astronut.app.name }}
         resources: {}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.astronut.readiness.path }}
+            port: {{ .Values.astronut.readiness.port }}
+          initialDelaySeconds: {{ .Values.astronut.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.astronut.readiness.periodSeconds }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.astronut.liveness.path }}
+            port: {{ .Values.astronut.liveness.port }}
+          initialDelaySeconds: {{ .Values.astronut.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.astronut.liveness.periodSeconds }}
 status: {}
