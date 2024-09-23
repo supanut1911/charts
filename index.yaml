@@ -9,7 +9,7 @@ entries:
     name: astronut
     type: application
     urls:
-    - astronut-0.2.0.tgz
+      - https://github.com/supanut1911/charts/releases/download/astronut-0.2.0/astronut-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.16.0
@@ -19,6 +19,6 @@ entries:
     name: astronut
     type: application
     urls:
-    - astronut-0.1.0.tgz
+      - https://github.com/supanut1911/charts/releases/download/astronut-0.2.0/astronut-0.2.0.tgz
     version: 0.1.0
 generated: "2024-09-22T01:09:55.933095+07:00"
