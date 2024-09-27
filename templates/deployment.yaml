@@ -5,6 +5,12 @@ metadata:
   labels:
     app: {{ .Release.Name }}
   name: {{ .Release.Name }}
+
+data: 
+{{- $appname := .Release.Name }}
+  {{- with .Values.astronut}}
+  appname: {{ $appname }}
+{{- end}}
 spec:
   replicas: {{ .Values.astronut.replicaCount }}
   selector:
