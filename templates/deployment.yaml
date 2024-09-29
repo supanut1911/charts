@@ -1,18 +1,18 @@
+
+{{ $appname := .Values.astronut.app.name}}
+{{ $app := .Values.astronut}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: {{ .Release.Name }}
-  name: {{ .Release.Name }}
-
+    app: {{ upper .Release.Name }}
+  name: {{ upper .Release.Name }}
+  app-name: {{ $appname }}
 data: 
-{{- $appname := .Release.Name }}
-  {{- with .Values.astronut}}
-  appname: {{ $appname }}
-{{- end}}
 spec:
-  replicas: {{ .Values.astronut.replicaCount }}
+  sname: {{ default "spaceworld" .Values.astronut.name | upper | quote}}
+  replicas: {{ default "3" .Values.astronut.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}
@@ -27,16 +27,24 @@ spec:
       - image: {{ .Values.astronut.image.repository }}:{{ .Values.astronut.image.tag }}
         name: {{ .Values.astronut.app.name }}
         resources: {}
+        {{- if .Values.astronut.readiness.enabled }}
+        {{with .Values.astronut.readiness}}
         readinessProbe:
           httpGet:
-            path: {{ .Values.astronut.readiness.path }}
-            port: {{ .Values.astronut.readiness.port }}
-          initialDelaySeconds: {{ .Values.astronut.readiness.initialDelaySeconds }}
-          periodSeconds: {{ .Values.astronut.readiness.periodSeconds }}
+            path: {{ .path }}
+            port: {{ .port }}
+          initialDelaySeconds: {{ .initialDelaySeconds }}
+          periodSeconds: {{ .periodSeconds }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.astronut.liveness.enabled }}
+        {{with .Values.astronut.liveness}}
         livenessProbe:
           httpGet:
-            path: {{ .Values.astronut.liveness.path }}
-            port: {{ .Values.astronut.liveness.port }}
-          initialDelaySeconds: {{ .Values.astronut.liveness.initialDelaySeconds }}
-          periodSeconds: {{ .Values.astronut.liveness.periodSeconds }}
+            path: {{ .path }}
+            port: {{ .port }}
+          initialDelaySeconds: {{ .initialDelaySeconds }}
+          periodSeconds: {{ .periodSeconds }}
+          {{- end }}
+        {{- end }}
 status: {}

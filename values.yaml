@@ -1,16 +1,18 @@
 astronut:
-  relicaCount: 1
+  replicaContXYZ: 1
   image:
     repository: devsupanut/rocket-nodejs-app
     tag: v0.1.0
   app:
     name: rocket-nodejs-app
   readiness:
+    enabled: true
     path: /health
     port: 8080
     initialDelaySeconds: 10
     periodSeconds: 5
   liveness:
+    enabled: true
     path: /health
     port: 8080
     initialDelaySeconds: 10
@@ -20,3 +22,27 @@ service:
   protocol: TCP
   type: ClusterIP
   port: 8080
+
+
+astronut2:
+  dep: 
+    - deployment:
+        replicaContXYZ: 1
+        image:
+          repository: devsupanut/rocket-nodejs-app
+          tag: v0.1.0
+        app:
+          name: rocket-nodejs-app
+        readiness:
+          enabled: true
+          path: /health
+          port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        liveness:
+          enabled: false
+          path: /health
+          port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+

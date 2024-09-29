@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: {{ upper .Release.Name }}
+  name: {{ upper .Release.Name }}
+data: 
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        resources: {}
+        {{- range $key, $dep := .Values.astronut.dep }}
+        readinessProbe:
+          tmp: {{ $key }}
+          httpGet:
+            path: {{ $dep.deployment.readiness.path }}
+            port: {{ $dep.deployment.readiness.port }}
+          initialDelaySeconds: {{ $dep.deployment.readiness.initialDelaySeconds }}
+          periodSeconds: {{ $dep.deployment.readiness.periodSeconds }}
+        {{- end }}
+        {{- range $key, $dep := .Values.astronut.dep }}
+        livenessProbe:
+          httpGet:
+            path: {{ $dep.deployment.liveness.path }}
+            port: {{ $dep.deployment.liveness.port }}
+          initialDelaySeconds: {{ $dep.deployment.liveness.initialDelaySeconds }}
+          periodSeconds: {{ $dep.deployment.liveness.periodSeconds }}
+        {{- end }}
+
+status: {}
