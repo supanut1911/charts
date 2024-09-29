@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - image: {{ .Values.astronut.image.repository }}:{{ .Values.astronut.image.tag }}
-        name: {{ .Values.astronut.app.name }}
+        name: {{- template "application"}}
         resources: {}
         {{- if .Values.astronut.readiness.enabled }}
         {{with .Values.astronut.readiness}}
