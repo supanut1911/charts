@@ -1,3 +1,3 @@
-{{- define "application" -}}
-rocket-nodejs-app
-{{- end -}}
+{{- define "application" }}
+name: {{ .Values.astronut.app.name}}
+{{- end }}

@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: send-pre-install-message
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: slack-notifier
+          image: curlimages/curl:latest
+          command:
+          - /bin/sh
+          - -c
+          - |
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Helm chart installation is starting..."}' 'icon_emoji: :helm:' https://hooks.slack.com/services/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
+            
+      restartPolicy: Never
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: send-post-install-message
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: slack-notifier
+          image: curlimages/curl:latest
+          command:
+          - /bin/sh
+          - -c
+          - |
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Helm chart installation has Done!!!"}' 'icon_emoji: :helm:' https://hooks.slack.com/services/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
+      restartPolicy: Never
+
+

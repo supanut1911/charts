@@ -1,5 +1,5 @@
 astronut:
-  replicaContXYZ: 1
+  replicaCount: 1
   image:
     repository: devsupanut/rocket-nodejs-app
     tag: v0.1.0

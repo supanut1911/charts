@@ -1,18 +1,12 @@
-
-{{ $appname := .Values.astronut.app.name}}
-{{ $app := .Values.astronut}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: {{ upper .Release.Name }}
-  name: {{ upper .Release.Name }}
-  app-name: {{ $appname }}
-data: 
+    app: {{ .Release.Name }}
+  name: {{ .Release.Name }}
 spec:
-  sname: {{ default "spaceworld" .Values.astronut.name | upper | quote}}
-  replicas: {{ default "3" .Values.astronut.replicaCount }}
+  replicas: {{ .Values.astronut.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}
@@ -25,26 +19,18 @@ spec:
     spec:
       containers:
       - image: {{ .Values.astronut.image.repository }}:{{ .Values.astronut.image.tag }}
-        name: {{- template "application"}}
+        name: {{ .Values.astronut.app.name }}
         resources: {}
-        {{- if .Values.astronut.readiness.enabled }}
-        {{with .Values.astronut.readiness}}
         readinessProbe:
           httpGet:
-            path: {{ .path }}
-            port: {{ .port }}
-          initialDelaySeconds: {{ .initialDelaySeconds }}
-          periodSeconds: {{ .periodSeconds }}
-        {{- end }}
-        {{- end }}
-        {{- if .Values.astronut.liveness.enabled }}
-        {{with .Values.astronut.liveness}}
+            path: {{ .Values.astronut.readiness.path }}
+            port: {{ .Values.astronut.readiness.port }}
+          initialDelaySeconds: {{ .Values.astronut.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.astronut.readiness.periodSeconds }}
         livenessProbe:
           httpGet:
-            path: {{ .path }}
-            port: {{ .port }}
-          initialDelaySeconds: {{ .initialDelaySeconds }}
-          periodSeconds: {{ .periodSeconds }}
-          {{- end }}
-        {{- end }}
+            path: {{ .Values.astronut.liveness.path }}
+            port: {{ .Values.astronut.liveness.port }}
+          initialDelaySeconds: {{ .Values.astronut.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.astronut.liveness.periodSeconds }}
 status: {}
